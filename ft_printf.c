@@ -6,18 +6,18 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:36:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/14 15:50:29 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/15 09:46:49 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include "libft.h"
+#include "ft_printf.h"
 
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
 	char	*flag;
 	int		size_flag;
+	int		count;
 
 	va_start(args, format);
 	while (*format)
@@ -58,22 +58,38 @@ int	ft_printf(const char *format, ...)
 					size_flag = size_flag * 10 + (format - '0');
 			}//nickel jusque la 🐈​
 			if (*format == 'c')
-				ft_putchar_fd(va_arg(args, char),1);
+				count = ft_putchar(va_arg(args, char));
 			else if (*format == 's')
-				ft_putstr_fd(va_arg(args, char*),1);
+				count = ft_putstr(va_arg(args, char*));
 			else if (*format == 'p')
-				ft_putstr_flag(va_arg(args, void*), flag, size_flag); //putstr ? 🚨​ hexa
+				count = ft_putstr_flag(va_arg(args, void*), flag, size_flag); //putstr ? 🚨​ hexa
 			else if (*format == 'i' || *format == 'd')
-				ft_putnbr_flag(va_arg(args, int),flag);
+				count = ft_putnbr_flag(va_arg(args, long), flag, 0);
 			else if (*format == 'u')
-				ft_putstr_flag(va_arg(args, unsigned int), flag, size_flag); //putnbr usigned
+				count = ft_putstr_flag(va_arg(args, long), flag, size_flag,1); //putnbr usigned
 			else if (*format == 'x' || *format == 'X')
-				ft_putstr_flag(va_arg(args, void*), flag, size_flag); //non printable pour ft_hexa 🚨
+				count = ft_putahex(va_arg(args, void*), flag, size_flag); //non printable pour count = ft_hexa 🚨
 			else if (*format == '%')
-				ft_putchar(va_arg(args, char));
+				count = ft_putchar(va_arg(args, char));
 		}
 	}
+	return (count);
 }
+/*
+⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢻⣿⡗⢶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣄
+⠀⢻⣇⠀⠈⠙⠳⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⠶⠛⠋⣹⣿⡿
+⠀⠀⠹⣆⠀⠀⠀⠀⠙⢷⣄⣀⣀⣀⣤⣤⣤⣄⣀⣴⠞⠋⠉⠀⠀⠀⢀⣿⡟⠁
+⠀⠀⠀⠙⢷⡀⠀⠀⠀⠀⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠀⠀
+⠀⠀⠀⠀⠈⠻⡶⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣠⡾⠋⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣼⠃⠀⢠⠒⣆⠀⠀⠀⠀⠀⠀⢠⢲⣄⠀⠀⠀⢻⣆⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢰⡏⠀⠀⠈⠛⠋⠀⢀⣀⡀⠀⠀⠘⠛⠃⠀⠀⠀⠈⣿⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⣾⡟⠛⢳⠀⠀⠀⠀⠀⣉⣀⠀⠀⠀⠀⣰⢛⠙⣶⠀⢹⣇⠀⠀⠀⠀
+⠀⠀⠀⠀⢿⡗⠛⠋⠀⠀⠀⠀⣾⠋⠀⢱⠀⠀⠀⠘⠲⠗⠋⠀⠈⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⠘⢷⡀⠀⠀⠀⠀⠀⠈⠓⠒⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡇⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣧⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀
+*/
 /* -0 #+ gerer avec une string et lanalyser
  // Vérifier la largeur
             if (*format >= '1' && *format <= '9') {
@@ -93,4 +109,6 @@ printf("% d\n", -42);   // Affiche "-42"
 printf("%05d\n", 42);    // Affiche "00042"
 printf("%08x\n", 255);   // Affiche "000000ff"
 printf("%-5d\n", 42);    // Affiche "42   "
-printf("%-10s\n", "abc"); // Affiche "abc       " */
+printf("%-10s\n", "abc"); // Affiche "abc       " 
+printf("%05d", 2); // This will print "00002"
+printf("%%");      // This will print "%"*/
