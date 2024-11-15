@@ -6,7 +6,7 @@
 #    By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 11:47:31 by adelattr          #+#    #+#              #
-#    Updated: 2024/11/14 10:35:06 by hhecquet         ###   ########.fr        #
+#    Updated: 2024/11/15 11:02:17 by hhecquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,20 @@ NAME = libftprintf.a
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I
+CFLAGS = -Wall -Wextra -Werror 
 
-SRCS = 
+SRCS =	ft_printf.c 			\
+		ft_printf_tools.c 		\
+		ft_printf_basictools.c
 
-INCLUDES = ...
+INCLUDES = ft_printf.h
 
 OBJ = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+	ar -rcs $(NAME) $(OBJ)
 
 %o: %c $(INCLUDES)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -34,7 +36,7 @@ clean:
 	rm -f $(OBJ)
 
 fclean: clean
-		rm -f $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 

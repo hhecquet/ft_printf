@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 08:50:56 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/15 08:58:45 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:23:12 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@ size_t	ft_strlen(const char *s)
 	}
 	return (j);
 }
-int	ft_putchar(char c)
-{
-	write(1, &c, 1);
-	return (1)
-}
+
 int	ft_tolower(int c)
 {
 	if (c <= 'Z' && c >= 'A')
@@ -37,15 +33,38 @@ int	ft_tolower(int c)
 	}
 	return (c);
 }
-void	ft_putstr(char *s)
+
+int	ft_putstr(char *s)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (s[i])
 	{
-		write(fd, &s[i], 1);
+		write(1, &s[i], 1);
 		i++;
 	}
 	return (i);
+}
+
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void	ft_putnbr(int nb)
+{
+	long	n;
+
+	n = nb;
+	if (n < 0)
+	{
+		n = n * -1;
+		ft_putchar('-');
+	}
+	if (n >= 10)
+	{
+		ft_putnbr(n / 10);
+	}
+	ft_putchar((n % 10) + '0');
 }
