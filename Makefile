@@ -6,7 +6,7 @@
 #    By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 11:47:31 by adelattr          #+#    #+#              #
-#    Updated: 2024/11/15 11:02:17 by hhecquet         ###   ########.fr        #
+#    Updated: 2024/11/17 11:02:54 by hhecquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCS =	ft_printf.c 			\
 		ft_printf_tools.c 		\
-		ft_printf_basictools.c
+		ft_printf_basictools.c 	\
+		ft_putflags.c 			
 
 INCLUDES = ft_printf.h
 

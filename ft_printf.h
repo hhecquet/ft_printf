@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 09:00:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 09:47:00 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 12:11:45 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@
 /********************************************/
 typedef struct s_flags
 {
-	int size;
-	char format;
-	int minus;
-	int plus;
-	int zero;
-	int pourcent;
-	int space;
-	int hash;
-} t_flags;
+	int		size;
+	char	format;
+	int		minus;
+	int		plus;
+	int		zero;
+	int		pourcent;
+	int		space;
+	int		hash;
+}	t_flags;
 int		ft_printf(const char *format, ...);
+void	ft_parser_flag(const char *format, t_flags flags);
+void	ft_init_flags(t_flags flags);
 /****************************************************/
 /*  _               _      _              _       _ */
 /* | |             (_)    | |            | |     | |*/
@@ -47,11 +49,11 @@ int		ft_printf(const char *format, ...);
 /* |_.__/ \__,_|___/_|\___|\__\___/ \___/|_|___/ (_)*/
 /*                                                  */
 /****************************************************/
-size_t	ft_strlen(const char *s);
+int		ft_strlen(const char *s);
 int		ft_tolower(int c);
-int		ft_putstr(char *s);
-void	ft_putchar(char c);
 void	ft_putnbr(int nb);
+int		ft_count_hex(char *str);
+void	ft_putchar(char c);
 /************************************************/
 /*                 _ _              _       _ _ */
 /*                | | |            | |     | | |*/
@@ -65,6 +67,19 @@ int		ft_putnbr_flag(long nb, t_flags flags, char format);
 int		ft_putstr_flag(char *str, t_flags flags, char format);
 int		ft_putahex(char *str, t_flags flags, char format);
 int		ft_putchar_flag(char c, t_flags flags, char format);
+int		ft_count_num(long nb);
+/*******************************************/
+/*             _    __ _             _ _ _ */
+/*            | |  / _| |           | | | |*/
+/* _ __  _   _| |_| |_| | __ _  __ _| | | |*/
+/*| '_ \| | | | __| __| |/ _` |/ _` | | | |*/
+/*| |_) | |_| | |_| | | | (_| | (_| |_|_|_|*/
+/*| .__/ \__,_|\__|_| |_|\__,_|\__, (_|_|_)*/
+/*| |                           __/ |      */
+/*|_|                          |___/       */
+/*******************************************/
+int		ft_putflag_before(t_flags flags, int count, int len);
+int		ft_putflag_after(t_flags flags, int count, int len);
 
 #endif
 /***************************************************/

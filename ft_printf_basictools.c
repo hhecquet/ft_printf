@@ -6,15 +6,15 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 08:50:56 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 08:21:20 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 11:36:07 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
-	size_t	j;
+	int	j;
 
 	j = 0;
 	while (s[j])
@@ -31,19 +31,6 @@ int	ft_tolower(int c)
 		return (c + 32);
 	}
 	return (c);
-}
-
-int	ft_putstr(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		write(1, &s[i], 1);
-		i++;
-	}
-	return (i);
 }
 
 void	ft_putchar(char c)
@@ -66,4 +53,20 @@ void	ft_putnbr(int nb)
 		ft_putnbr(n / 10);
 	}
 	ft_putchar((n % 10) + '0');
+}
+
+int	ft_count_hex(char *str)
+{
+	int		count;
+	char	*hex;
+
+	count = 1;
+	hex = str;
+	while (*hex++)
+	{
+		*hex = *hex / 16;
+		*hex = *hex % 16;
+		count += 2;
+	}
+	return (count);
 }

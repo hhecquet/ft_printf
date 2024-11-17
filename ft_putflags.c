@@ -1,50 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   paser_flag.c                                       :+:      :+:    :+:   */
+/*   ft_putflags.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 08:21:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 08:56:04 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 14:19:23 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_ignore_flag(char *flag)
+int	ft_putflag_before( t_flags flags, int count, int len)
 {
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	while (*flag)
+	if (flags.zero == 1 && flags.minus == 0 && (flags.format == 'c'
+			|| flags.format == 's'))
 	{
-		if (*flag == '-')
+		while (len < flags.size)
 		{
-			tmp[i++] = '-';
-			flag++; 
+			count += write(1, " ", 1);
+			flags.size--;
 		}
-		else if (*flag == '0')
-		{
-			tmp[i++] = '0';
-			flag++;
-		}
-		if (*flag == '+' && ())
-			flag++;
-		if (*flag == ' ')
-			flag++;
-		if (*flag == '#')
-			flag++;
 	}
+	else if (flags.zero == 1 && flags.minus == 0)
+	{
+		while (len < flags.size)
+		{
+			count += write(1, " ", 1);
+			flags.size--;
+		}
+	}
+	return (count);
 }
-typedef struct s_flags
+
+int	ft_putflag_after( t_flags flags, int count, int len)
 {
-	int size_flag;
-	char format;
-	char cs;
-	char pu;
-	char p;
-	char x;
-	char di;
-} t_flags;
+	if (flags.minus == 1)
+	{
+		while (len < flags.size)
+		{
+			count += write(1, " ", 1);
+			flags.size--;
+		}
+	}
+	return (count);
+}
