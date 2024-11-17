@@ -6,11 +6,10 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 08:50:56 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/15 11:23:12 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 08:21:20 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "ft_printf.h"
 
 size_t	ft_strlen(const char *s)

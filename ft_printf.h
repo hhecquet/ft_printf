@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 09:00:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/15 12:00:28 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 09:47:00 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@
 /*       ______| |                          */
 /*      |______|_|                          */
 /********************************************/
+typedef struct s_flags
+{
+	int size;
+	char format;
+	int minus;
+	int plus;
+	int zero;
+	int pourcent;
+	int space;
+	int hash;
+} t_flags;
 int		ft_printf(const char *format, ...);
 /****************************************************/
 /*  _               _      _              _       _ */
@@ -50,10 +61,10 @@ void	ft_putnbr(int nb);
 /* |_|  \___|\__,_|_|\__\___/ \___/|_|___/ (_|_)*/
 /*                                              */
 /************************************************/
-int		ft_putnbr_flag(long nb, char *flag, int size_flag, int is_unsigned);
-int		ft_putstr_flag(char *str, char *flag, int size_flag);
-int		ft_putahex(char *str, char format, char *flag, int size_flag);
-int		ft_putchar_flag(char c, int size_flag, char format);
+int		ft_putnbr_flag(long nb, t_flags flags, char format);
+int		ft_putstr_flag(char *str, t_flags flags, char format);
+int		ft_putahex(char *str, t_flags flags, char format);
+int		ft_putchar_flag(char c, t_flags flags, char format);
 
 #endif
 /***************************************************/

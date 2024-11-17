@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:36:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/15 11:18:34 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 09:47:49 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,70 +15,60 @@
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
-	char	*flag;
-	int		size_flag;
+	t_flags flags;
 	int		count;
-
-	flag = 0;
+	
+	count = 0;
+	flags.size = 0;
 	va_start(args, format);
 	while (*format)
 	{
 		if (*format == '%')
 		{
-			format++;
-			if (*format == '-')
-			{
-				*flag++ = '-';
-				format++;
-			}
-			else if (*format == '0')
-			{
-				*flag++ = '0';
-				format++;
-			}
-			else if (*format == '+')
-			{
-				*flag++ = '+';
-				format++;
-			}
-			else if (*format == ' ')
-			{
-				*flag++ = ' ';
-				format++;
-			}
-			else if (*format == '#')
-			{
-				*flag++ = '#';
-				format++;
-			}
-			while (*format >= '0' && *format <= '9')
-			{
-				if (*format == '0' && size_flag == 0)
-					format++;
-				else
-					size_flag = (size_flag * 10) + (*format - '0');
-			}
+			ft_parser_flag(*format, flags);
 			if (*format == 'c' || *format == '%')
-				count += ft_putchar_flag(va_arg(args, int), size_flag, *format);
+				count += ft_putchar_flag(va_arg(args, int), flags, *format);
 			else if (*format == 's')
-				count += ft_putstr(va_arg(args, char *));
-			else if (*format == 'i' || *format == 'd')
-				count += ft_putnbr_flag(va_arg(args, long), flag, size_flag, 0);
-			else if (*format == 'u')
-				count += ft_putnbr_flag(va_arg(args, long), flag, size_flag, 1);
+				count += ft_putstr_flag(va_arg(args, char *), flags, *format);
+			else if (*format == 'i' || *format == 'd' || *format == 'u')
+				count += ft_putnbr_flag(va_arg(args, long), flags, *format);
 			else if (*format == 'x' || *format == 'X' || *format == 'p')
-				count += ft_putahex(va_arg(args, void *), *format,
-						flag, size_flag);
+				count += ft_putahex(va_arg(args, void *), flags, *format);
 		}
 		else
-		{
-			count += 1;
-			write(1, *format, 1);
-			format++;
-		}
+			count += write(1, format++, 1);
 	}
 	return (count);
 }
+void	ft_parser_flag(char *format, t_flags flags)
+{
+	flags.minus = 0;
+    flags.plus = 0;
+    flags.zero = 0;
+    flags.space = 0;
+    flags.hash = 0;
+	while (*format != 'c' || *format != 's' || *format != 'i' || *format != 'd' || *format != 'u' || *format != 'x' || *format != 'X' || *format != 'p')
+    {
+        if (*format == '-')
+            flags.minus = 1;
+        else if (*format == '+')
+            flags.plus = 1;
+        else if (*format == ' ')
+            flags.space = 1;
+        else if (*format == '#')
+            flags.hash = 1;
+        else if (*format >= '0' && *format <= '9')
+        	while (*format >= '0' && *format <= '9')
+			{
+				if (*format == '0' && flags.size == 0)
+					flags.zero = 1;
+				else
+					flags.size = (flags.size * 10) + (*format - '0');
+			}
+		format++;
+    }
+}
+
 /*
 ⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢻⣿⡗⢶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣄
