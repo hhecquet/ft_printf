@@ -6,31 +6,44 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 08:50:56 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 11:36:07 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:56:04 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_strlen(const char *s)
+int ft_strlen(const char *s)
 {
-	int	j;
+    char *null_str;
+    int j;
 
-	j = 0;
-	while (s[j])
-	{
-		j++;
-	}
-	return (j);
+    null_str = "(null)";
+    if (!s)
+        return (ft_strlen(null_str));
+    j = 0;
+    while (s[j])
+        j++;
+    return (j);
 }
 
-int	ft_tolower(int c)
+int	ft_count_num(long nb)
 {
-	if (c <= 'Z' && c >= 'A')
+	int	count;
+
+	if (nb == 0)
+		return (1);
+	count = 0;
+	if (nb < 0)
 	{
-		return (c + 32);
+		nb = nb * -1;
+		count++;
 	}
-	return (c);
+	while (nb >= 10)
+	{
+		nb = nb / 10;
+		count++;
+	}
+	return (count + 1);
 }
 
 void	ft_putchar(char c)
@@ -55,18 +68,12 @@ void	ft_putnbr(int nb)
 	ft_putchar((n % 10) + '0');
 }
 
-int	ft_count_hex(char *str)
+void handle_hex_zero(char format, int *count)
 {
-	int		count;
-	char	*hex;
-
-	count = 1;
-	hex = str;
-	while (*hex++)
-	{
-		*hex = *hex / 16;
-		*hex = *hex % 16;
-		count += 2;
-	}
-	return (count);
+    if (format == 'p')
+    {
+        *count = write(1, "0x0", 3);
+        return;
+    }
+    *count = write(1, "0", 1);
 }

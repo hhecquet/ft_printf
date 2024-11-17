@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 09:00:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 12:11:45 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:11:38 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ typedef struct s_flags
 	int		pourcent;
 	int		space;
 	int		hash;
+	int		point;
+	int     precision;
 }	t_flags;
 int		ft_printf(const char *format, ...);
-void	ft_parser_flag(const char *format, t_flags flags);
-void	ft_init_flags(t_flags flags);
+void	ft_parser_flag(const char **format, t_flags *flags);
+void	ft_init_flags(t_flags *flags);
+char	*ft_strchr(const char *s, int c);
 /****************************************************/
 /*  _               _      _              _       _ */
 /* | |             (_)    | |            | |     | |*/
@@ -50,10 +53,11 @@ void	ft_init_flags(t_flags flags);
 /*                                                  */
 /****************************************************/
 int		ft_strlen(const char *s);
-int		ft_tolower(int c);
 void	ft_putnbr(int nb);
-int		ft_count_hex(char *str);
 void	ft_putchar(char c);
+int		ft_count_num(long nb);
+void	handle_hex_zero(char format, int *count);
+void handle_double_null(t_flags flags, int *count);
 /************************************************/
 /*                 _ _              _       _ _ */
 /*                | | |            | |     | | |*/
@@ -65,9 +69,9 @@ void	ft_putchar(char c);
 /************************************************/
 int		ft_putnbr_flag(long nb, t_flags flags, char format);
 int		ft_putstr_flag(char *str, t_flags flags, char format);
-int		ft_putahex(char *str, t_flags flags, char format);
+int		ft_putahex(unsigned long n, t_flags flags, char format);
 int		ft_putchar_flag(char c, t_flags flags, char format);
-int		ft_count_num(long nb);
+void	fill_hex_buffer(unsigned long n, char *buffer, int *i, char *hex);
 /*******************************************/
 /*             _    __ _             _ _ _ */
 /*            | |  / _| |           | | | |*/
@@ -80,6 +84,9 @@ int		ft_count_num(long nb);
 /*******************************************/
 int		ft_putflag_before(t_flags flags, int count, int len);
 int		ft_putflag_after(t_flags flags, int count, int len);
+void	handle_sign(long nb, t_flags flags, int *count, char format);
+char	get_padding_char(t_flags flags);
+char	*get_hex_base(char format);
 
 #endif
 /***************************************************/

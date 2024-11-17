@@ -6,7 +6,7 @@
 #    By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 11:47:31 by adelattr          #+#    #+#              #
-#    Updated: 2024/11/17 11:02:54 by hhecquet         ###   ########.fr        #
+#    Updated: 2024/11/17 16:55:05 by hhecquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,10 @@ OBJ = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) ft_printf.h
+	ar -rcs $(NAME) $(OBJ)
+
+bonus: $(OBJ) ft_printf.h
 	ar -rcs $(NAME) $(OBJ)
 
 %o: %c $(INCLUDES)
