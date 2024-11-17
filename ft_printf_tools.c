@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:14:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 17:17:52 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:24:41 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int ft_putnbr_flag(long nb, t_flags flags, char format)
 {
-    unsigned long n;
-    int count;
-    int len;
+    unsigned long   n;
+    int            count;
+    int            len;
 
     count = 0;
     if (format == 'u')
@@ -34,6 +34,8 @@ int ft_putnbr_flag(long nb, t_flags flags, char format)
     len = ft_count_num(n);
     if (flags.point)
     {
+        if (flags.precision == 0 && n == 0)
+            return (count);
         while (len < flags.precision)
         {
             write(1, "0", 1);
@@ -41,30 +43,32 @@ int ft_putnbr_flag(long nb, t_flags flags, char format)
             len++;
         }
     }
-    if (!(flags.point && flags.precision == 0 && n == 0))
-    {
-        if (n >= 10)
-            ft_putnbr(n / 10);
-        ft_putchar((n % 10) + '0');
-        count += len;
-    }
+    if (n >= 10)
+        ft_putnbr(n / 10);
+    ft_putchar((n % 10) + '0');
+    count += len;
     return (count);
 }
 
 
 int ft_putstr_flag(char *str, t_flags flags, char format)
 {
-    int count;
-    int len;
-    char *null_str;
+    int     count;
+    int     len;
+    char    *null_str;
 
     null_str = "(null)";
     if (!str)
         str = null_str;
     flags.format = format;
     len = ft_strlen(str);
-    if (flags.point && flags.precision < len)
-        len = flags.precision;
+    if (flags.point)
+    {
+        if (flags.precision < len)
+            len = flags.precision;
+        if (flags.precision == 0)
+            len = 0;
+    }
     count = len;
     count = ft_putflag_before(flags, count, len);
     write(1, str, len);
@@ -93,27 +97,30 @@ int ft_putahex(unsigned long n, t_flags flags, char format)
     int     count;
     char    buffer[17];
     int     i;
-    int     len;
+    int     pad_len;
 
     count = 0;
     i = 0;
     if (n == 0 && format == 'p')
     {
-        write(1, "0x0", 3);
-        return (3);
+        write(1, "(nil)", 5);
+        return (5);
     }
     write_hex_prefix(format, flags, n, &count);
-    fill_hex_buffer(n, buffer, &i, get_hex_base(format));
-    len = i;
     if (flags.point)
     {
-        while (i < flags.precision)
-        {
+        pad_len = flags.precision;
+        fill_hex_buffer(n, buffer, &i, get_hex_base(format));
+        while (i < pad_len)
             buffer[i++] = '0';
-            count++;
-        }
+        if (!(flags.precision == 0 && n == 0))
+            count += write(1, buffer, i);
     }
-    count += write(1, buffer, len);
+    else
+    {
+        fill_hex_buffer(n, buffer, &i, get_hex_base(format));
+        count += write(1, buffer, i);
+    }
     return (count);
 }
 
