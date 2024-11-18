@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 09:00:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 14:52:08 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:12:42 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_flags
     int     flag;
     int     precision;
 }   t_flags;
+int handle_null_str(t_flags flags, int *count);
 int     ft_print_format(va_list args, t_flags flags);
 int     parseformat(const char *str, int i, t_flags *flags);
 int     parserflag(const char *str, int i, t_flags *flags);

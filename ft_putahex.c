@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puthex.c                                        :+:      :+:    :+:   */
+/*   ft_putahex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:25:04 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 14:48:37 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:13:34 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,47 +58,74 @@ int	ft_putahash(unsigned long long n, t_flags flags)
 	return (count);
 }
 
-int	ft_print_hex(unsigned long long n, t_flags flags)
+int ft_print_hex(unsigned long long n, t_flags flags)
 {
-	char	*hex;
-	int		count;
-	int		iszero;
+    char    *hex;
+    int     count;
+    int     iszero;
 
-	count = 0;
-	iszero = 0;
-	if (flags.flag == 'X')
-		hex = "0123456789ABCDEF";
-	else
-		hex = "0123456789abcdef";
-	if (n == 0 && flags.point == 1 && flags.sizep == 0)
-		iszero = 1;
-	compareformatsizep(n, 0, iszero, &flags);
-	if (iszero == 1)
-		return (count += putformat(flags.format, flags));
-	if (!flags.minus && flags.format)
-		count += putformat(flags.format, flags);
-	count += ft_putahash(n, flags);
-	ft_putahex(n, &count, hex, &flags);
-	if (flags.minus && flags.format)
-		count += putformat(flags.format, flags);
-	return (count);
+    count = 0;
+    if (flags.flag == 'p' && !n)
+    {
+        if (!flags.minus && flags.format > 5)
+            count += putformat(flags.format - 5, flags);
+        count += write(1, "(nil)", 5);
+        if (flags.minus && flags.format > 5)
+            count += putformat(flags.format - 5, flags);
+        return (count);
+    }
+    iszero = (n == 0 && flags.point && flags.sizep == 0);
+    if (flags.flag == 'X')
+        hex = "0123456789ABCDEF";
+    else
+        hex = "0123456789abcdef";
+    compareformatsizep(n, 0, iszero, &flags);
+    if (!flags.minus && flags.format)
+        count += putformat(flags.format, flags);
+    count += ft_putahash(n, flags);
+    if (!iszero)
+        ft_putahex(n, &count, hex, &flags);
+    if (flags.minus && flags.format)
+        count += putformat(flags.format, flags);
+    return (count);
 }
 
-int	ft_putstring(char *str, t_flags flags)
+int handle_null_str(t_flags flags, int *count)
 {
-	int		len;
-	int		count;
+	(void)count;
+    if (flags.point)
+    {
+        if (flags.sizep >= 6)
+            return (6);
+        return (0);
+    }
+    return (6);
+}
 
-	count = 0;
-	if (!str)
-		str = "(null)";
-	len = ft_strlen(str);
-	if (len >= flags.sizep && flags.point)
-		len = flags.sizep;
-	if (flags.format > len && !flags.minus)
-		count += putformat(flags.format - len, flags);
-	count += ft_putstr_len(str, len);
-	if (flags.format > len && flags.minus)
-		count += putformat(flags.format - len, flags);
-	return (count);
+int ft_putstring(char *str, t_flags flags)
+{
+    int     len;
+    int     count;
+
+    count = 0;
+    if (!str)
+    {
+        len = handle_null_str(flags, &count);
+        if (!flags.minus && flags.format > len)
+            count += putformat(flags.format - len, flags);
+        if (len)
+            write(1, "(null)", len);
+        if (flags.minus && flags.format > len)
+            count += putformat(flags.format - len, flags);
+        return (count + len);
+    }
+    len = ft_strlen(str);
+    if (flags.point && flags.sizep < len)
+        len = flags.sizep;
+    if (!flags.minus && flags.format > len)
+        count += putformat(flags.format - len, flags);
+    write(1, str, len);
+    if (flags.minus && flags.format > len)
+        count += putformat(flags.format - len, flags);
+    return (count + len);
 }
