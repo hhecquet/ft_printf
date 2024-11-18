@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 08:21:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 16:42:05 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:03:42 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,17 @@ char	get_padding_char(t_flags flags)
 
 int ft_putflag_before(t_flags flags, int count, int len)
 {
-    char pad;
-    int size;
+    char    pad;
+    int     size;
 
-    pad = get_padding_char(flags);
+    pad = ' ';
+    if (flags.zero && !flags.minus && !flags.point)
+        pad = '0';
     size = flags.size;
-    if (!flags.minus)
+    if (!flags.minus && size > len)
     {
+        if (pad == '0' && count > 0)
+            size--;
         while (len < size)
         {
             write(1, &pad, 1);
@@ -51,35 +55,46 @@ int ft_putflag_after(t_flags flags, int count, int len)
 
 void	handle_sign(long nb, t_flags flags, int *count, char format)
 {
-	if (format != 'u' && nb > 0 && flags.plus)
-		*count += write(1, "+", 1);
-	else if (format != 'u' && nb > 0 && flags.space)
-		*count += write(1, " ", 1);
+    if (format != 'u' && nb > 0 && flags.plus)
+        *count += write(1, "+", 1);
+    else if (format != 'u' && nb > 0 && flags.space)
+        *count += write(1, " ", 1);
 }
 
 char *get_hex_base(char format)
 {
-	if (format == 'X')
-		return ("0123456789ABCDEF");
-	return ("0123456789abcdef");
+    if (format == 'X')
+        return ("0123456789ABCDEF");
+    return ("0123456789abcdef");
 }
 void fill_hex_buffer(unsigned long n, char *buffer, int *i, char *hex)
 {
-    char temp[17];
-    int j;
+    unsigned long   temp;
+    int            j;
+    int            k;
+    char           tmp;
 
     j = 0;
     if (n == 0)
     {
-        buffer[*i] = '0';
-        (*i)++;
+        buffer[(*i)++] = '0';
+        buffer[*i] = '\0';
         return;
     }
-    while (n > 0)
+    while (n)
     {
-        temp[j++] = hex[n % 16];
-        n /= 16;
+        temp = n % 16;
+        buffer[j++] = hex[temp];
+        n = n / 16;
     }
-    while (j > 0)
-        buffer[(*i)++] = temp[--j];
+    buffer[j] = '\0';
+    k = 0;
+    j--;
+    while (k < j)
+    {
+        tmp = buffer[k];
+        buffer[k++] = buffer[j];
+        buffer[j--] = tmp;
+    }
+    *i = ft_strlen(buffer);
 }

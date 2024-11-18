@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 09:00:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/17 17:11:38 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 09:08:41 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@
 /********************************************/
 typedef struct s_flags
 {
-	int		size;
-	char	format;
-	int		minus;
-	int		plus;
-	int		zero;
-	int		pourcent;
-	int		space;
-	int		hash;
-	int		point;
-	int     precision;
-}	t_flags;
+    int     size;
+    char    format;
+    int     minus;
+    int     plus;
+    int     zero;
+    int     pourcent;
+    int     space;
+    int     hash;
+    int     point;
+    int     precision;
+}   t_flags;
 int		ft_printf(const char *format, ...);
 void	ft_parser_flag(const char **format, t_flags *flags);
 void	ft_init_flags(t_flags *flags);
@@ -57,7 +57,7 @@ void	ft_putnbr(int nb);
 void	ft_putchar(char c);
 int		ft_count_num(long nb);
 void	handle_hex_zero(char format, int *count);
-void handle_double_null(t_flags flags, int *count);
+void	handle_double_null(t_flags flags, int *count);
 /************************************************/
 /*                 _ _              _       _ _ */
 /*                | | |            | |     | | |*/
