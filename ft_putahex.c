@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:25:04 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 16:13:34 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:25:36 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,16 @@ int ft_print_hex(unsigned long long n, t_flags flags)
     if (flags.flag == 'p' && !n)
     {
         if (!flags.minus && flags.format > 5)
-            count += putformat(flags.format - 5, flags);
+        {
+            while (count < flags.format - 5)
+                count += write(1, " ", 1);
+        }
         count += write(1, "(nil)", 5);
         if (flags.minus && flags.format > 5)
-            count += putformat(flags.format - 5, flags);
+        {
+            while (count < flags.format)
+                count += write(1, " ", 1);
+        }
         return (count);
     }
     iszero = (n == 0 && flags.point && flags.sizep == 0);
