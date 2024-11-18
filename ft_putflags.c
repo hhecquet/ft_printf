@@ -6,95 +6,100 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 08:21:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 11:03:42 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:44:41 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	get_padding_char(t_flags flags)
+int	ft_putchar_c(char c, t_flags flags)
 {
-    if (flags.zero && !flags.minus)
-        return ('0');
-    return (' ');
+	int	count;
+
+	count = 0;
+	if (!flags.minus && flags.format > 1)
+		count += putformat(flags.format - 1, flags);
+	count += ft_putchar(c);
+	if (flags.minus && flags.format > 1)
+		count += putformat(flags.format - 1, flags);
+	return (count);
 }
 
-int ft_putflag_before(t_flags flags, int count, int len)
+void	ft_putsizep(long nb, int *count, t_flags *flags)
 {
-    char    pad;
-    int     size;
-
-    pad = ' ';
-    if (flags.zero && !flags.minus && !flags.point)
-        pad = '0';
-    size = flags.size;
-    if (!flags.minus && size > len)
-    {
-        if (pad == '0' && count > 0)
-            size--;
-        while (len < size)
-        {
-            write(1, &pad, 1);
-            count++;
-            len++;
-        }
-    }
-    return (count);
+	if (nb >= 0 && flags->plus == 1)
+	{
+		*count += ft_putchar('+');
+		flags->plus = 0;
+	}
+	else if (nb < 0)
+	{
+		*count += ft_putchar('-');
+		nb *= -1;
+		flags->plus = 0;
+	}
+	while (flags->sizep > 0)
+	{
+		*count += ft_putchar('0');
+		flags->sizep--;
+	}
+	if (nb >= 10)
+		ft_putsizep(nb / 10, count, flags);
+	*count += ft_putchar(nb % 10 + '0');
 }
 
-int ft_putflag_after(t_flags flags, int count, int len)
+int ft_putnbr(long nb, t_flags flags)
 {
-    if (flags.minus)
-        while (len < flags.size)
-        {
-            count += write(1, " ", 1);
-            len++;
-        }
-    return (count);
+    int	sign;
+    int	count;
+    int	zero;
+
+    count = 0;
+    zero = 0;
+	sign = handle_sign(nb, flags);
+	if (sign == 0)
+		count += checkspace(flags);
+	if (nb == 0 && flags.point == 1 && flags.sizep == 0)
+		zero = 1;
+	compareformatsizep(nb, sign, zero, &flags);
+	if (zero == 1)
+		return (count += putformat(flags.format, flags));
+	if (!flags.minus && flags.format)
+		count += putformat(flags.format, flags);
+	ft_putsizep(nb, &count, &flags);
+	if (flags.minus && flags.format)
+		count += putformat(flags.format, flags);
+	return (count);
 }
 
-void	handle_sign(long nb, t_flags flags, int *count, char format)
+int	putformat(int len, t_flags flags)
 {
-    if (format != 'u' && nb > 0 && flags.plus)
-        *count += write(1, "+", 1);
-    else if (format != 'u' && nb > 0 && flags.space)
-        *count += write(1, " ", 1);
+	int	count;
+
+	count = 0;
+	if (flags.space == 1 && len > 0 && ft_strchr("uid", flags.flag))
+		len -= 1;
+	if (flags.hash == 1 || flags.flag == 'p')
+		len -= 2;
+	while (len > 0)
+	{
+		if (flags.zero)
+			count += ft_putchar('0');
+		else
+			count += ft_putchar(' ');
+		len--;
+	}
+	return (count);
 }
 
-char *get_hex_base(char format)
+int	ft_putstr_len(char *str, int len)
 {
-    if (format == 'X')
-        return ("0123456789ABCDEF");
-    return ("0123456789abcdef");
-}
-void fill_hex_buffer(unsigned long n, char *buffer, int *i, char *hex)
-{
-    unsigned long   temp;
-    int            j;
-    int            k;
-    char           tmp;
+	int	i;
 
-    j = 0;
-    if (n == 0)
-    {
-        buffer[(*i)++] = '0';
-        buffer[*i] = '\0';
-        return;
-    }
-    while (n)
-    {
-        temp = n % 16;
-        buffer[j++] = hex[temp];
-        n = n / 16;
-    }
-    buffer[j] = '\0';
-    k = 0;
-    j--;
-    while (k < j)
-    {
-        tmp = buffer[k];
-        buffer[k++] = buffer[j];
-        buffer[j--] = tmp;
-    }
-    *i = ft_strlen(buffer);
+	i = 0;
+	if (!str)
+		return (ft_putstr("(null)"));
+	while (str[i] && i < len)
+		ft_putchar(str[i++]);
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 09:00:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 09:08:41 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:52:08 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdarg.h>
+
 
 /********************************************/
 /*   __ _                  _       _    __  */
@@ -28,8 +29,8 @@
 /********************************************/
 typedef struct s_flags
 {
-    int     size;
-    char    format;
+    int     sizep;
+    int     format;
     int     minus;
     int     plus;
     int     zero;
@@ -37,12 +38,14 @@ typedef struct s_flags
     int     space;
     int     hash;
     int     point;
+    int     flag;
     int     precision;
 }   t_flags;
-int		ft_printf(const char *format, ...);
-void	ft_parser_flag(const char **format, t_flags *flags);
-void	ft_init_flags(t_flags *flags);
-char	*ft_strchr(const char *s, int c);
+int     ft_print_format(va_list args, t_flags flags);
+int     parseformat(const char *str, int i, t_flags *flags);
+int     parserflag(const char *str, int i, t_flags *flags);
+t_flags ft_init_flags(void);
+int     ft_printf(const char *format, ...);
 /****************************************************/
 /*  _               _      _              _       _ */
 /* | |             (_)    | |            | |     | |*/
@@ -52,12 +55,11 @@ char	*ft_strchr(const char *s, int c);
 /* |_.__/ \__,_|___/_|\___|\__\___/ \___/|_|___/ (_)*/
 /*                                                  */
 /****************************************************/
-int		ft_strlen(const char *s);
-void	ft_putnbr(int nb);
-void	ft_putchar(char c);
-int		ft_count_num(long nb);
-void	handle_hex_zero(char format, int *count);
-void	handle_double_null(t_flags flags, int *count);
+int     ft_putchar(char c);
+int     ft_putstr(char *str);
+int     handle_sign(long nb, t_flags flags);
+char    *ft_strchr(const char *s, int c);
+int     ft_isdigit(int c);
 /************************************************/
 /*                 _ _              _       _ _ */
 /*                | | |            | |     | | |*/
@@ -67,11 +69,11 @@ void	handle_double_null(t_flags flags, int *count);
 /* |_|  \___|\__,_|_|\__\___/ \___/|_|___/ (_|_)*/
 /*                                              */
 /************************************************/
-int		ft_putnbr_flag(long nb, t_flags flags, char format);
-int		ft_putstr_flag(char *str, t_flags flags, char format);
-int		ft_putahex(unsigned long n, t_flags flags, char format);
-int		ft_putchar_flag(char c, t_flags flags, char format);
-void	fill_hex_buffer(unsigned long n, char *buffer, int *i, char *hex);
+size_t  ft_strlen(const char *s);
+int     checkspace(t_flags flags);
+void    compareformatsizep(long long n, int sign, int zero, t_flags *flags);
+int     ft_intlen(long long n, int sign, int base, int zero);
+int     parsesizep(const char *str, int i, t_flags *flags);
 /*******************************************/
 /*             _    __ _             _ _ _ */
 /*            | |  / _| |           | | | |*/
@@ -82,11 +84,25 @@ void	fill_hex_buffer(unsigned long n, char *buffer, int *i, char *hex);
 /*| |                           __/ |      */
 /*|_|                          |___/       */
 /*******************************************/
-int		ft_putflag_before(t_flags flags, int count, int len);
-int		ft_putflag_after(t_flags flags, int count, int len);
-void	handle_sign(long nb, t_flags flags, int *count, char format);
-char	get_padding_char(t_flags flags);
-char	*get_hex_base(char format);
+int     ft_putchar_c(char c, t_flags flags);
+void    ft_putsizep(long nb, int *count, t_flags *flags);
+int     ft_putnbr(long nb, t_flags flags);
+int     putformat(int len, t_flags flags);
+int     ft_putstr_len(char *str, int len);
+/*******************************/
+/*  _                  _ _ _ _ */
+/* | |                | | | | |*/
+/* | |__   _____  __  | | | | |*/
+/* | '_ \ / _ \ \/ /  | | | | |*/
+/* | | | |  __/>  <   |_|_|_|_|*/
+/* |_| |_|\___/_/\_\  (_|_|_|_)*/
+/*                             */
+/*******************************/
+int     ft_ptrlen(unsigned long long n, int base);
+void    ft_putahex(unsigned long long nb, int *len, char *base, t_flags *flags);
+int     ft_putahash(unsigned long long n, t_flags flags);
+int     ft_print_hex(unsigned long long n, t_flags flags);
+int     ft_putstring(char *str, t_flags flags);
 
 #endif
 /***************************************************/

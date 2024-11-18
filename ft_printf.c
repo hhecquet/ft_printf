@@ -6,115 +6,120 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:36:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 09:49:48 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:51:28 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+int	ft_print_format(va_list args, t_flags flags)
 {
-    va_list	args;
-    t_flags	flags;
-    int		count;
+	int	count;
 
-    if (!format)
-        return (-1);
-    count = 0;
-    va_start(args, format);
-    while (*format)
-    {
-        if (*format == '%')
-        {
-            format++;
-            ft_init_flags(&flags);
-            ft_parser_flag(&format, &flags);
-            if (*format == 'c' || *format == '%')
-                count += ft_putchar_flag(va_arg(args, int), flags, *format);
-            else if (*format == 's')
-                count += ft_putstr_flag(va_arg(args, char *), flags, *format);
-            else if (*format == 'i' || *format == 'd' || *format == 'u')
-                count += ft_putnbr_flag(va_arg(args, int), flags, *format);
-            else if (*format == 'x' || *format == 'X')
-                count += ft_putahex(va_arg(args, unsigned int), flags, *format);
-            else if (*format == 'p')
-                   count += ft_putahex(va_arg(args, unsigned long), flags, *format);
-            format++;
-        }
-        else
-            count += write(1, format++, 1);
-    }
-    va_end(args);
-    return (count);
+	count = 0;
+	if (flags.flag == '%')
+		count += ft_putchar('%');
+	else if (flags.flag == 'c')
+		count += ft_putchar_c(va_arg(args, int), flags);
+	else if (flags.flag == 's')
+		count += ft_putstring(va_arg(args, char *), flags);
+	else if (flags.flag == 'x' || flags.flag == 'X')
+		count += ft_print_hex(va_arg(args, unsigned int), flags);
+	else if (flags.flag == 'p')
+		count += ft_print_hex(va_arg(args, unsigned long long), flags);
+	else if (flags.flag == 'd' || flags.flag == 'i')
+		count += ft_putnbr(va_arg(args, int), flags);
+	else if (flags.flag == 'u')
+		count += ft_putnbr(va_arg(args, unsigned int), flags);
+	else
+		return (0);
+	return (count);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	parseformat(const char *str, int i, t_flags *flags)
 {
-	int		i;
-
-	i = 0;
-	while (s[i])
+	while (ft_isdigit(str[i]))
 	{
-		if (s[i] == (char)c)
-			return ((char *)(s + i));
+		flags->format = (flags->format * 10) + (str[i] - '0');
 		i++;
 	}
-	if (s[i] == (char)c)
-		return ((char *)(s + i));
-	return (NULL);
+	return (i);
 }
 
-void    ft_parser_flag(const char **format, t_flags *flags)
+int	parserflag(const char *str, int i, t_flags *flags)
 {
-    while (!ft_strchr("cspdiuxX%", **format) && **format != '\0')
-    {
-        if (**format == '-')
-        {
-            flags->minus = 1;
-            flags->zero = 0;
-        }
-        else if (**format == '+')
-            flags->plus = 1;
-        else if (**format == '.')
-        {
-            flags->point = 1;
-            (*format)++;
-            flags->precision = 0;
-            while (**format >= '0' && **format <= '9')
-            {
-                flags->precision = (flags->precision * 10) + (**format - '0');
-                (*format)++;
-            }
-            (*format)--;
-        }
-        else if (**format == ' ')
-            flags->space = 1;
-        else if (**format == '#')
-            flags->hash = 1;
-        else if (**format >= '0' && **format <= '9')
-        {
-            if (**format == '0' && flags->size == 0)
-                flags->zero = 1;
-            else
-                flags->size = (flags->size * 10) + (**format - '0');
-        }
-        (*format)++;
-    }
+	while (str[i++])
+	{
+		if (!ft_isdigit(str[i]) && !ft_strchr("-. +#c%sxXuipd", str[i]))
+			break ;
+		if (str[i] == '+')
+			flags->plus = 1;
+		if (str[i] == '#')
+			flags->hash = 1;
+		if (str[i] == '-')
+			flags->minus = 1;
+		if (str[i] == '0' && flags->minus == 0 && flags->point == 0)
+			flags->zero = 1;
+		if (ft_isdigit(str[i]) && !flags->point)
+			i = parseformat(str, i, flags);
+		if (str[i] == ' ')
+			flags->space = 1;
+		if (str[i] == '.')
+			i = parsesizep(str, i + 1, flags);
+		if (ft_strchr("csx%Xuipd", str[i]))
+		{
+			flags->flag = str[i];
+			break ;
+		}
+	}
+	return (i);
 }
 
-void ft_init_flags(t_flags *flags)
+t_flags ft_init_flags(void)
 {
-    flags->size = 0;
-    flags->format = 0;
-    flags->minus = 0;
-    flags->plus = 0;
-    flags->zero = 0;
-    flags->pourcent = 0;
-    flags->space = 0;
-    flags->hash = 0;
-    flags->point = 0;
-    flags->precision = 0;
+	t_flags flags;
+	
+    flags.sizep = 0; //= prec
+    flags.format = 0; //= width
+    flags.minus = 0;
+    flags.plus = 0;
+    flags.zero = 0;
+    flags.pourcent = 0;
+    flags.space = 0;
+    flags.hash = 0;
+    flags.point = 0;
+    flags.precision = 0;
+	return (flags);
 }
+
+int	ft_printf(const char *format, ...)
+{
+	va_list	args;
+	int		i;
+	int		count;
+	t_flags	flags;
+
+	i = 0;
+	count = 0;
+	flags = ft_init_flags();
+	va_start(args, format);
+	while (format[i])
+	{
+		if (format[i] == '%')
+		{
+			i = parserflag(format, i, &flags);
+			count += ft_print_format(args, flags);
+			flags = ft_init_flags();
+		}
+		else
+			count += ft_putchar(format[i]);
+		i++;
+	}
+	va_end(args);
+	return (count);
+}
+
+
 
 
 /*

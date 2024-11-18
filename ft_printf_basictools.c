@@ -6,72 +6,60 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 08:50:56 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 10:12:25 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:40:52 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int ft_strlen(const char *s)
-{
-    int j;
-
-    if (!s)
-        return (0);
-    j = 0;
-    while (s && s[j])
-        j++;
-    return (j);
-}
-
-int	ft_count_num(long nb)
-{
-    int	count;
-
-    if (nb == 0)
-        return (1);
-    count = 0;
-    if (nb < 0)
-    {
-        nb = nb * -1;
-        count++;
-    }
-    while (nb >= 10)
-    {
-        nb = nb / 10;
-        count++;
-    }
-    return (count + 1);
-}
-
-void	ft_putchar(char c)
+int	ft_putchar(char c)
 {
 	write(1, &c, 1);
+	return (1);
 }
 
-void	ft_putnbr(int nb)
+int ft_putstr(char *str)
 {
-    long	n;
+	int	count;
 
-    n = nb;
-    if (n < 0)
-    {
-        n = n * -1;
-        ft_putchar('-');
-    }
-    if (n >= 10)
-    {
-        ft_putnbr(n / 10);
-    }
-    ft_putchar((n % 10) + '0');
+	count = 0;
+	if (!str)
+		return (ft_putstr("(null)"));
+	while (str[count])
+		ft_putchar(str[count++]);
+	return (count);
 }
 
-void handle_hex_zero(char format, int *count)
+int handle_sign(long nb, t_flags flags)
 {
-    if (format == 'p')
-    {
-        *count = write(1, "0x0", 3);
-        return;
-    }
-    *count = write(1, "0", 1);
+    if (flags.plus == 1 && nb >= 0)
+        return (1);
+    if (nb < 0)
+        return (1);
+    return (0);        
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == (char)c)
+			return ((char *)(s + i));
+		i++;
+	}
+	if (s[i] == (char)c)
+		return ((char *)(s + i));
+	return (NULL);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+	{
+		return (1);
+	}
+	return (0);
 }

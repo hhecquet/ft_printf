@@ -6,7 +6,7 @@
 #    By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 11:47:31 by adelattr          #+#    #+#              #
-#    Updated: 2024/11/18 10:16:09 by hhecquet         ###   ########.fr        #
+#    Updated: 2024/11/18 14:53:13 by hhecquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ CFLAGS = -Wall -Wextra -Werror
 SRCS =	ft_printf.c 			\
 		ft_printf_tools.c 		\
 		ft_printf_basictools.c 	\
-		ft_putflags.c 			
+		ft_putflags.c			\
+		ft_putahex.c			
 
 INCLUDES = ft_printf.h
 
@@ -30,7 +31,7 @@ all: $(NAME)
 $(NAME): $(OBJ) ft_printf.h
 	ar -rcs $(NAME) $(OBJ)
 
-bonus : $(OBJ) ft_printf.h
+bonus: $(NAME)
 	ar -rcs $(NAME) $(OBJ)
 
 %o: %c $(INCLUDES)
