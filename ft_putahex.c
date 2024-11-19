@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:25:04 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 17:25:36 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:12:51 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,80 +58,47 @@ int	ft_putahash(unsigned long long n, t_flags flags)
 	return (count);
 }
 
-int ft_print_hex(unsigned long long n, t_flags flags)
+int	ft_print_hex_prefix(unsigned long long n, t_flags flags, int *count)
 {
-    char    *hex;
-    int     count;
-    int     iszero;
-
-    count = 0;
-    if (flags.flag == 'p' && !n)
-    {
-        if (!flags.minus && flags.format > 5)
-        {
-            while (count < flags.format - 5)
-                count += write(1, " ", 1);
-        }
-        count += write(1, "(nil)", 5);
-        if (flags.minus && flags.format > 5)
-        {
-            while (count < flags.format)
-                count += write(1, " ", 1);
-        }
-        return (count);
-    }
-    iszero = (n == 0 && flags.point && flags.sizep == 0);
-    if (flags.flag == 'X')
-        hex = "0123456789ABCDEF";
-    else
-        hex = "0123456789abcdef";
-    compareformatsizep(n, 0, iszero, &flags);
-    if (!flags.minus && flags.format)
-        count += putformat(flags.format, flags);
-    count += ft_putahash(n, flags);
-    if (!iszero)
-        ft_putahex(n, &count, hex, &flags);
-    if (flags.minus && flags.format)
-        count += putformat(flags.format, flags);
-    return (count);
+	if (flags.flag == 'p' && !n)
+	{
+		if (!flags.minus && flags.format > 5)
+		{
+			while (*count < flags.format - 5)
+				*count += write(1, " ", 1);
+		}
+		*count += write(1, "(nil)", 5);
+		if (flags.minus && flags.format > 5)
+		{
+			while (*count < flags.format)
+				*count += write(1, " ", 1);
+		}
+		return (1);
+	}
+	return (0);
 }
 
-int handle_null_str(t_flags flags, int *count)
+int	ft_print_hex(unsigned long long n, t_flags flags)
 {
-	(void)count;
-    if (flags.point)
-    {
-        if (flags.sizep >= 6)
-            return (6);
-        return (0);
-    }
-    return (6);
-}
+	char	*hex;
+	int		count;
+	int		iszero;
 
-int ft_putstring(char *str, t_flags flags)
-{
-    int     len;
-    int     count;
-
-    count = 0;
-    if (!str)
-    {
-        len = handle_null_str(flags, &count);
-        if (!flags.minus && flags.format > len)
-            count += putformat(flags.format - len, flags);
-        if (len)
-            write(1, "(null)", len);
-        if (flags.minus && flags.format > len)
-            count += putformat(flags.format - len, flags);
-        return (count + len);
-    }
-    len = ft_strlen(str);
-    if (flags.point && flags.sizep < len)
-        len = flags.sizep;
-    if (!flags.minus && flags.format > len)
-        count += putformat(flags.format - len, flags);
-    write(1, str, len);
-    if (flags.minus && flags.format > len)
-        count += putformat(flags.format - len, flags);
-    return (count + len);
+	count = 0;
+	if (ft_print_hex_prefix(n, flags, &count))
+		return (count);
+	iszero = (n == 0 && flags.point && flags.sizep == 0);
+	if (flags.flag == 'X')
+		hex = "0123456789ABCDEF";
+	else
+		hex = "0123456789abcdef";
+	compareformatsizep(n, 0, iszero, &flags);
+	if (!flags.minus && flags.format)
+		count += putformat(flags.format, flags);
+	count += ft_putahash(n, flags);
+	if (!iszero)
+		ft_putahex(n, &count, hex, &flags);
+	if (flags.minus && flags.format)
+		count += putformat(flags.format, flags);
+	return (count);
 }

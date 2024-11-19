@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:36:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 14:51:28 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/19 08:02:48 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,20 @@ int	parserflag(const char *str, int i, t_flags *flags)
 	return (i);
 }
 
-t_flags ft_init_flags(void)
+t_flags	ft_init_flags(void)
 {
-	t_flags flags;
-	
-    flags.sizep = 0; //= prec
-    flags.format = 0; //= width
-    flags.minus = 0;
-    flags.plus = 0;
-    flags.zero = 0;
-    flags.pourcent = 0;
-    flags.space = 0;
-    flags.hash = 0;
-    flags.point = 0;
-    flags.precision = 0;
+	t_flags	flags;
+
+	flags.sizep = 0;
+	flags.format = 0;
+	flags.minus = 0;
+	flags.plus = 0;
+	flags.zero = 0;
+	flags.pourcent = 0;
+	flags.space = 0;
+	flags.hash = 0;
+	flags.point = 0;
+	flags.precision = 0;
 	return (flags);
 }
 
@@ -118,10 +118,6 @@ int	ft_printf(const char *format, ...)
 	va_end(args);
 	return (count);
 }
-
-
-
-
 /*
 ⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢻⣿⡗⢶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣄

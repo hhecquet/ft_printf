@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 08:21:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 14:44:41 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/19 07:50:52 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ void	ft_putsizep(long nb, int *count, t_flags *flags)
 	*count += ft_putchar(nb % 10 + '0');
 }
 
-int ft_putnbr(long nb, t_flags flags)
+int	ft_putnbr(long nb, t_flags flags)
 {
-    int	sign;
-    int	count;
-    int	zero;
+	int	sign;
+	int	count;
+	int	zero;
 
-    count = 0;
-    zero = 0;
+	count = 0;
+	zero = 0;
 	sign = handle_sign(nb, flags);
 	if (sign == 0)
 		count += checkspace(flags);

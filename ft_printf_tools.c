@@ -6,15 +6,15 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:14:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/18 14:51:38 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/19 07:51:19 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t  ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	size_t  i;
+	size_t	i;
 
 	i = 0;
 	while (s[i])

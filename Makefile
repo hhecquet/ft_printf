@@ -6,7 +6,7 @@
 #    By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 11:47:31 by adelattr          #+#    #+#              #
-#    Updated: 2024/11/18 14:53:13 by hhecquet         ###   ########.fr        #
+#    Updated: 2024/11/19 08:09:57 by hhecquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRCS =	ft_printf.c 			\
 		ft_printf_tools.c 		\
 		ft_printf_basictools.c 	\
 		ft_putflags.c			\
-		ft_putahex.c			
+		ft_putahex.c			\
+		ft_printf_utils.c			
 
 INCLUDES = ft_printf.h
 
