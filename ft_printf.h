@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 09:00:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/19 08:04:52 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/25 14:25:08 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@
 /********************************************/
 typedef struct s_flags
 {
-	int	sizep;
-	int	format;
+	int	formatsize;
 	int	minus;
 	int	plus;
 	int	zero;
@@ -42,7 +41,7 @@ typedef struct s_flags
 }	t_flags;
 int		handle_null_str(t_flags flags, int *count);
 int		ft_print_format(va_list args, t_flags flags);
-int		parseformat(const char *str, int i, t_flags *flags);
+int		parseformatsize(const char *str, int i, t_flags *flags);
 int		parserflag(const char *str, int i, t_flags *flags);
 t_flags	ft_init_flags(void);
 int		ft_printf(const char *format, ...);
@@ -71,9 +70,9 @@ int		ft_isdigit(int c);
 /************************************************/
 size_t	ft_strlen(const char *s);
 int		checkspace(t_flags flags);
-void	compareformatsizep(long long n, int sign, int zero, t_flags *flags);
+void	compareformatprecision(long long n, int sign, int zero, t_flags *flags);
 int		ft_intlen(long long n, int sign, int base, int zero);
-int		parsesizep(const char *str, int i, t_flags *flags);
+int		parseprecision(const char *format, int i, t_flags *flags);
 /*******************************************/
 /*             _    __ _             _ _ _ */
 /*            | |  / _| |           | | | |*/
@@ -85,7 +84,7 @@ int		parsesizep(const char *str, int i, t_flags *flags);
 /*|_|                          |___/       */
 /*******************************************/
 int		ft_putchar_c(char c, t_flags flags);
-void	ft_putsizep(long nb, int *count, t_flags *flags);
+void	ft_putprecision(long nb, int *count, t_flags *flags);
 int		ft_putnbr(long nb, t_flags flags);
 int		putformat(int len, t_flags flags);
 int		ft_putstr_len(char *str, int len);

@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 08:50:56 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/19 07:52:13 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/25 14:23:25 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	ft_putchar(char c)
 	return (1);
 }
 
-int	ft_putstr(char *str)
+int	ft_putstr(char *format)
 {
 	int	count;
 
 	count = 0;
-	if (!str)
+	if (!format)
 		return (ft_putstr("(null)"));
-	while (str[count])
-		ft_putchar(str[count++]);
+	while (format[count])
+		ft_putchar(format[count++]);
 	return (count);
 }
 

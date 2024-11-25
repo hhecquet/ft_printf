@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 08:21:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/19 09:12:52 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/25 14:13:33 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ int	ft_putchar_c(char c, t_flags flags)
 	int	count;
 
 	count = 0;
-	if (!flags.minus && flags.format > 1)
-		count += putformat(flags.format - 1, flags);
+	if (!flags.minus && flags.formatsize > 1)
+		count += putformat(flags.formatsize - 1, flags);
 	count += ft_putchar(c);
-	if (flags.minus && flags.format > 1)
-		count += putformat(flags.format - 1, flags);
+	if (flags.minus && flags.formatsize > 1)
+		count += putformat(flags.formatsize - 1, flags);
 	return (count);
 }
 
-void	ft_putsizep(long nb, int *count, t_flags *flags)
+void	ft_putprecision(long nb, int *count, t_flags *flags)
 {
 	if (nb >= 0 && flags->plus == 1)
 	{
@@ -38,13 +38,13 @@ void	ft_putsizep(long nb, int *count, t_flags *flags)
 		nb *= -1;
 		flags->plus = 0;
 	}
-	while (flags->sizep > 0)
+	while (flags->precision > 0)
 	{
 		*count += ft_putchar('0');
-		flags->sizep--;
+		flags->precision--;
 	}
 	if (nb >= 10)
-		ft_putsizep(nb / 10, count, flags);
+		ft_putprecision(nb / 10, count, flags);
 	*count += ft_putchar(nb % 10 + '0');
 }
 
@@ -59,16 +59,16 @@ int	ft_putnbr(long nb, t_flags flags)
 	sign = handle_sign(nb, flags);
 	if (sign == 0)
 		count += checkspace(flags);
-	if (nb == 0 && flags.point == 1 && flags.sizep == 0)
+	if (nb == 0 && flags.point == 1 && flags.precision == 0)
 		zero = 1;
-	compareformatsizep(nb, sign, zero, &flags);
+	compareformatprecision(nb, sign, zero, &flags);
 	if (zero == 1)
-		return (count += putformat(flags.format, flags));
-	if (!flags.minus && flags.format)
-		count += putformat(flags.format, flags);
-	ft_putsizep(nb, &count, &flags);
-	if (flags.minus && flags.format)
-		count += putformat(flags.format, flags);
+		return (count += putformat(flags.formatsize, flags));
+	if (!flags.minus && flags.formatsize)
+		count += putformat(flags.formatsize, flags);
+	ft_putprecision(nb, &count, &flags);
+	if (flags.minus && flags.formatsize)
+		count += putformat(flags.formatsize, flags);
 	return (count);
 }
 

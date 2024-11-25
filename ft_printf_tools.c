@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 15:14:07 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/19 07:51:19 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/25 14:22:28 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	checkspace(t_flags flags)
 	return (0);
 }
 
-void	compareformatsizep(long long n, int sign, int zero, t_flags *flags)
+void	compareformatprecision(long long n, int sign, int zero, t_flags *flags)
 {
 	int	base;
 	int	len;
@@ -42,18 +42,18 @@ void	compareformatsizep(long long n, int sign, int zero, t_flags *flags)
 		len = ft_ptrlen(n, base);
 	else
 		len = ft_intlen(n, sign, base, zero);
-	if (flags->sizep > 0 && flags->sizep + sign >= len)
-		flags->sizep = flags->sizep + sign - len;
+	if (flags->precision > 0 && flags->precision + sign >= len)
+		flags->precision = flags->precision + sign - len;
 	else
-		flags->sizep = 0;
-	if (flags ->format <= flags->sizep + len)
-		flags->format = 0;
-	if (flags->format > 0 && flags->format > flags->sizep + len)
-		flags->format = flags->format - (flags->sizep + len);
-	if (flags->format && sign && flags->zero)
+		flags->precision = 0;
+	if (flags ->formatsize <= flags->precision + len)
+		flags->formatsize = 0;
+	if (flags->formatsize > 0 && flags->formatsize > flags->precision + len)
+		flags->formatsize = flags->formatsize - (flags->precision + len);
+	if (flags->formatsize && sign && flags->zero)
 	{
-		flags->sizep += flags->format;
-		flags->format = 0;
+		flags->precision += flags->formatsize ;
+		flags->formatsize = 0;
 	}
 }
 
@@ -76,13 +76,13 @@ int	ft_intlen(long long n, int sign, int base, int zero)
 	return (len);
 }
 
-int	parsesizep(const char *str, int i, t_flags *flags)
+int	parseprecision(const char *format, int i, t_flags *flags)
 {
 	flags->point = 1;
 	flags->zero = 0;
-	while (ft_isdigit(str[i]))
+	while (ft_isdigit(format[i]))
 	{
-		flags->sizep = (flags->sizep * 10) + (str[i] - '0');
+		flags->precision = (flags->precision * 10) + (format[i] - '0');
 		i++;
 	}
 	return (i);
