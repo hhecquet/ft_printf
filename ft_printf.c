@@ -6,7 +6,7 @@
 /*   By: hhecquet <hhecquet@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:36:37 by hhecquet          #+#    #+#             */
-/*   Updated: 2024/11/25 14:34:42 by hhecquet         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:28:50 by hhecquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	ft_printf(const char *format, ...)
 ⠀⠀⠀⠀⠀⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣧⠀⠀⠀
 ⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀
 */
-/* #include "ft_printf.h"
+#include "ft_printf.h"
 #include <stdio.h>
 
 int main(void) {
@@ -157,4 +157,4 @@ int main(void) {
     ft_printf("Hash flag: %#x\n", 255);
 
     return 0;
-} */
+}
